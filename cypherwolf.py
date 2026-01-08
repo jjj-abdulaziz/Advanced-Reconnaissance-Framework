@@ -2,7 +2,7 @@
 """
 CypherWolf - Advanced Reconnaissance Scanner
 An intelligent, modular penetration testing framework
-Author: Abdulaziz
+Author: Your Name
 Version: 1.0.0
 """
 
@@ -746,4 +746,67 @@ class CypherWolf:
         if 'web' in self.results:
             tech_count = len(self.results['web'].get('technologies', []))
             vuln_count = len(self.results['web'].get('vulnerabilities', []))
-            security_grade = self.results['web'].get('headers', {}).
+            headers_info = self.results['web'].get('headers', {})
+            security_grade = headers_info.get('grade', 'N/A') if headers_info else 'N/A'
+            print(f"{Colors.BOLD}Technologies:{Colors.ENDC} {tech_count} detected")
+            print(f"{Colors.BOLD}Security Grade:{Colors.ENDC} {security_grade}")
+            print(f"{Colors.BOLD}Vulnerabilities:{Colors.ENDC} {vuln_count} found")
+        
+        # Subdomain Summary
+        if 'subdomains' in self.results:
+            subdomain_count = len(self.results['subdomains'])
+            print(f"{Colors.BOLD}Subdomains:{Colors.ENDC} {subdomain_count} found")
+        
+        print(f"\n{Colors.GREEN}Scan completed successfully!{Colors.ENDC}\n")
+    
+    def _save_results(self):
+        """Save results to JSON file"""
+        try:
+            with open(self.args.output, 'w') as f:
+                json.dump(self.results, f, indent=4, default=str)
+            self.logger.log(f"Results saved to {self.args.output}", "success")
+        except Exception as e:
+            self.logger.log(f"Error saving results: {str(e)}", "error")
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='CypherWolf - Advanced Reconnaissance Scanner',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python3 cypherwolf.py example.com -m full
+  python3 cypherwolf.py example.com -m web -o results.json
+  python3 cypherwolf.py example.com -m ports --threads 200
+  python3 cypherwolf.py example.com -m subdomain -v
+        """
+    )
+    
+    parser.add_argument('target', help='Target domain or IP address')
+    parser.add_argument('-m', '--mode', 
+                       choices=['dns', 'ports', 'web', 'subdomain', 'full'],
+                       default='full',
+                       help='Scan mode (default: full)')
+    parser.add_argument('-o', '--output', 
+                       help='Save results to JSON file')
+    parser.add_argument('-t', '--threads', 
+                       type=int, 
+                       default=100,
+                       help='Number of threads for port scanning (default: 100)')
+    parser.add_argument('-v', '--verbose', 
+                       action='store_true',
+                       help='Enable verbose output')
+    parser.add_argument('--version', 
+                       action='version', 
+                       version='CypherWolf v1.0.0')
+    
+    args = parser.parse_args()
+    
+    # Clean target
+    target = args.target.replace('http://', '').replace('https://', '').split('/')[0]
+    
+    # Initialize and run scanner
+    scanner = CypherWolf(target, args)
+    scanner.run()
+
+if __name__ == "__main__":
+    main()
