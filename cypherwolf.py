@@ -460,39 +460,298 @@ class WebAnalyzer:
         return found_dirs
     
     def _vulnerability_checks(self, url):
-        """Basic vulnerability detection"""
+        """Advanced vulnerability detection"""
         self.logger.log("Running vulnerability checks...", "scan")
         
         vulnerabilities = []
         
-        # Check for clickjacking
         try:
             response = self.session.get(url, timeout=10, verify=False)
-            if 'X-Frame-Options' not in response.headers and 'Content-Security-Policy' not in response.headers:
+            html = response.text
+            headers = response.headers
+            
+            # 1. Clickjacking vulnerability
+            if 'X-Frame-Options' not in headers and 'frame-ancestors' not in headers.get('Content-Security-Policy', ''):
                 vulnerabilities.append({
                     'type': 'Clickjacking',
                     'severity': 'medium',
-                    'description': 'Missing X-Frame-Options and CSP frame-ancestors'
+                    'description': 'Missing X-Frame-Options and CSP frame-ancestors',
+                    'recommendation': 'Add X-Frame-Options: DENY or SAMEORIGIN header'
                 })
-                self.logger.log("Potential clickjacking vulnerability", "vuln")
-        except:
-            pass
-        
-        # Check for directory listing
-        test_paths = ['/', '/images/', '/uploads/', '/files/']
-        for path in test_paths:
-            try:
-                test_url = urljoin(url, path)
-                response = self.session.get(test_url, timeout=5, verify=False)
-                if 'index of' in response.text.lower():
+                self.logger.log("Clickjacking vulnerability detected", "vuln")
+            
+            # 2. Missing HSTS
+            if 'Strict-Transport-Security' not in headers and url.startswith('https'):
+                vulnerabilities.append({
+                    'type': 'Missing HSTS',
+                    'severity': 'high',
+                    'description': 'HTTPS site without HTTP Strict Transport Security',
+                    'recommendation': 'Add Strict-Transport-Security header with max-age'
+                })
+                self.logger.log("Missing HSTS on HTTPS site", "vuln")
+            
+            # 3. XSS Protection disabled
+            xss_header = headers.get('X-XSS-Protection', '')
+            if '0' in xss_header:
+                vulnerabilities.append({
+                    'type': 'XSS Protection Disabled',
+                    'severity': 'medium',
+                    'description': 'X-XSS-Protection is disabled',
+                    'recommendation': 'Set X-XSS-Protection: 1; mode=block'
+                })
+                self.logger.log("XSS Protection is disabled", "vuln")
+            
+            # 4. Sensitive information in HTML comments
+            comments = re.findall(r'<!--(.*?)-->', html, re.DOTALL)
+            sensitive_patterns = [
+                (r'password', 'password'),
+                (r'api[_-]?key', 'API key'),
+                (r'secret', 'secret'),
+                (r'token', 'token'),
+                (r'admin', 'admin info'),
+                (r'TODO|FIXME|BUG', 'developer notes')
+            ]
+            
+            for comment in comments:
+                comment_lower = comment.lower()
+                for pattern, desc in sensitive_patterns:
+                    if re.search(pattern, comment_lower):
+                        vulnerabilities.append({
+                            'type': 'Information Disclosure',
+                            'severity': 'low',
+                            'description': f'Sensitive {desc} found in HTML comments',
+                            'recommendation': 'Remove sensitive information from comments'
+                        })
+                        self.logger.log(f"Sensitive {desc} in HTML comments", "warning")
+                        break
+            
+            # 5. Autocomplete on password fields
+            if re.search(r'<input[^>]*type=["\']password["\'][^>]*autocomplete=["\']on["\']', html, re.IGNORECASE):
+                vulnerabilities.append({
+                    'type': 'Autocomplete Enabled on Password',
+                    'severity': 'low',
+                    'description': 'Password fields have autocomplete enabled',
+                    'recommendation': 'Set autocomplete="off" on password inputs'
+                })
+                self.logger.log("Autocomplete enabled on password fields", "warning")
+            
+            # 6. Mixed content (HTTP resources on HTTPS page)
+            if url.startswith('https'):
+                http_resources = re.findall(r'http://[^"\'\s<>]+', html)
+                if http_resources:
                     vulnerabilities.append({
-                        'type': 'Directory Listing',
+                        'type': 'Mixed Content',
                         'severity': 'medium',
-                        'path': path
+                        'description': f'Found {len(http_resources)} HTTP resources on HTTPS page',
+                        'recommendation': 'Use HTTPS for all resources',
+                        'count': len(http_resources)
                     })
-                    self.logger.log(f"Directory listing enabled at {path}", "vuln")
-            except:
-                pass
+                    self.logger.log(f"Mixed content: {len(http_resources)} HTTP resources", "vuln")
+            
+            # 7. Directory listing
+            test_paths = ['/', '/images/', '/uploads/', '/files/', '/assets/', '/static/', '/backup/']
+            for path in test_paths:
+                try:
+                    test_url = urljoin(url, path)
+                    resp = self.session.get(test_url, timeout=5, verify=False)
+                    if 'index of' in resp.text.lower() or '<title>Index of' in resp.text:
+                        vulnerabilities.append({
+                            'type': 'Directory Listing',
+                            'severity': 'medium',
+                            'description': f'Directory listing enabled at {path}',
+                            'path': path,
+                            'recommendation': 'Disable directory listing in web server config'
+                        })
+                        self.logger.log(f"Directory listing at {path}", "vuln")
+                except:
+                    pass
+            
+            # 8. Exposed sensitive files
+            sensitive_files = [
+                ('.git/config', 'Git repository'),
+                ('.env', 'Environment variables'),
+                ('.DS_Store', 'macOS metadata'),
+                ('web.config', 'IIS configuration'),
+                ('.htaccess', 'Apache config'),
+                ('composer.json', 'PHP dependencies'),
+                ('package.json', 'Node.js dependencies'),
+                ('phpinfo.php', 'PHP info'),
+                ('info.php', 'PHP info'),
+                ('test.php', 'Test file'),
+                ('README.md', 'Documentation'),
+                ('backup.sql', 'Database backup'),
+                ('database.sql', 'Database backup'),
+                ('dump.sql', 'Database dump'),
+                ('config.php.bak', 'Backup file'),
+                ('wp-config.php.bak', 'WordPress backup'),
+                ('.gitignore', 'Git ignore'),
+                ('composer.lock', 'PHP lock file'),
+                ('yarn.lock', 'Yarn lock file'),
+                ('Dockerfile', 'Docker config')
+            ]
+            
+            for file_path, description in sensitive_files:
+                try:
+                    test_url = urljoin(url, file_path)
+                    resp = self.session.get(test_url, timeout=5, verify=False)
+                    if resp.status_code == 200 and len(resp.content) > 0:
+                        vulnerabilities.append({
+                            'type': 'Exposed Sensitive File',
+                            'severity': 'high' if any(x in file_path for x in ['.git', '.env', 'backup', 'dump', 'sql']) else 'medium',
+                            'description': f'{description} exposed at /{file_path}',
+                            'path': file_path,
+                            'recommendation': 'Remove or restrict access to sensitive files'
+                        })
+                        self.logger.log(f"Exposed: {file_path} ({description})", "vuln")
+                except:
+                    pass
+            
+            # 9. CORS misconfiguration
+            cors_header = headers.get('Access-Control-Allow-Origin', '')
+            if cors_header == '*':
+                vulnerabilities.append({
+                    'type': 'CORS Misconfiguration',
+                    'severity': 'medium',
+                    'description': 'Access-Control-Allow-Origin is set to wildcard (*)',
+                    'recommendation': 'Specify allowed origins instead of using wildcard'
+                })
+                self.logger.log("CORS misconfiguration: wildcard origin", "vuln")
+            
+            # 10. Server version disclosure
+            server_header = headers.get('Server', '')
+            if server_header and re.search(r'\d+\.\d+', server_header):
+                vulnerabilities.append({
+                    'type': 'Server Version Disclosure',
+                    'severity': 'low',
+                    'description': f'Server version disclosed: {server_header}',
+                    'recommendation': 'Remove version information from Server header'
+                })
+                self.logger.log(f"Server version disclosed: {server_header}", "warning")
+            
+            # 11. X-Powered-By disclosure
+            powered_by = headers.get('X-Powered-By', '')
+            if powered_by:
+                vulnerabilities.append({
+                    'type': 'Technology Disclosure',
+                    'severity': 'low',
+                    'description': f'X-Powered-By header discloses: {powered_by}',
+                    'recommendation': 'Remove X-Powered-By header'
+                })
+                self.logger.log(f"Technology disclosed: {powered_by}", "warning")
+            
+            # 12. SQL Injection test (basic)
+            sql_payloads = ["'", "1' OR '1'='1", "1; DROP TABLE users--"]
+            test_params = ['id', 'page', 'search', 'q', 'query']
+            
+            for param in test_params:
+                for payload in sql_payloads:
+                    try:
+                        test_url = f"{url}?{param}={payload}"
+                        resp = self.session.get(test_url, timeout=5, verify=False)
+                        
+                        sql_errors = [
+                            'sql syntax',
+                            'mysql_fetch',
+                            'mysql error',
+                            'postgresql',
+                            'warning: pg_',
+                            'unclosed quotation',
+                            'quoted string not properly terminated',
+                            'odbc',
+                            'microsoft sql server',
+                            'sqlite error'
+                        ]
+                        
+                        resp_lower = resp.text.lower()
+                        for error in sql_errors:
+                            if error in resp_lower:
+                                vulnerabilities.append({
+                                    'type': 'Potential SQL Injection',
+                                    'severity': 'critical',
+                                    'description': f'SQL error detected on parameter: {param}',
+                                    'parameter': param,
+                                    'recommendation': 'Use parameterized queries and input validation'
+                                })
+                                self.logger.log(f"Potential SQLi on parameter: {param}", "vuln")
+                                break
+                    except:
+                        pass
+            
+            # 13. XSS vulnerability test (basic)
+            xss_payload = '<script>alert(1)</script>'
+            for param in test_params:
+                try:
+                    test_url = f"{url}?{param}={xss_payload}"
+                    resp = self.session.get(test_url, timeout=5, verify=False)
+                    
+                    if xss_payload in resp.text:
+                        vulnerabilities.append({
+                            'type': 'Potential XSS',
+                            'severity': 'high',
+                            'description': f'Reflected XSS detected on parameter: {param}',
+                            'parameter': param,
+                            'recommendation': 'Sanitize user input and use CSP headers'
+                        })
+                        self.logger.log(f"Potential XSS on parameter: {param}", "vuln")
+                except:
+                    pass
+            
+            # 14. Open redirect vulnerability
+            redirect_payloads = ['//evil.com', 'https://evil.com', '//google.com']
+            redirect_params = ['url', 'redirect', 'next', 'return', 'goto', 'target']
+            
+            for param in redirect_params:
+                for payload in redirect_payloads:
+                    try:
+                        test_url = f"{url}?{param}={payload}"
+                        resp = self.session.get(test_url, timeout=5, verify=False, allow_redirects=False)
+                        
+                        location = resp.headers.get('Location', '')
+                        if payload in location or 'evil.com' in location:
+                            vulnerabilities.append({
+                                'type': 'Open Redirect',
+                                'severity': 'medium',
+                                'description': f'Open redirect on parameter: {param}',
+                                'parameter': param,
+                                'recommendation': 'Validate redirect URLs against whitelist'
+                            })
+                            self.logger.log(f"Open redirect on parameter: {param}", "vuln")
+                            break
+                    except:
+                        pass
+            
+            # 15. Missing Content-Type header
+            if 'Content-Type' not in headers:
+                vulnerabilities.append({
+                    'type': 'Missing Content-Type',
+                    'severity': 'low',
+                    'description': 'Response missing Content-Type header',
+                    'recommendation': 'Always set appropriate Content-Type header'
+                })
+                self.logger.log("Missing Content-Type header", "warning")
+            
+            # 16. Insecure deserialization indicators
+            if any(x in html for x in ['unserialize(', 'pickle.loads', 'ObjectInputStream', 'readObject']):
+                vulnerabilities.append({
+                    'type': 'Potential Insecure Deserialization',
+                    'severity': 'high',
+                    'description': 'Code suggests use of deserialization functions',
+                    'recommendation': 'Avoid deserializing untrusted data'
+                })
+                self.logger.log("Potential insecure deserialization", "vuln")
+            
+        except Exception as e:
+            self.logger.log(f"Error in vulnerability checks: {str(e)}", "error")
+        
+        if not vulnerabilities:
+            self.logger.log("No vulnerabilities detected", "success")
+        else:
+            critical = len([v for v in vulnerabilities if v.get('severity') == 'critical'])
+            high = len([v for v in vulnerabilities if v.get('severity') == 'high'])
+            medium = len([v for v in vulnerabilities if v.get('severity') == 'medium'])
+            low = len([v for v in vulnerabilities if v.get('severity') == 'low'])
+            
+            self.logger.log(f"Found {len(vulnerabilities)} vulnerabilities: Critical={critical}, High={high}, Medium={medium}, Low={low}", "warning")
         
         return vulnerabilities
     
