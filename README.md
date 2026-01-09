@@ -122,52 +122,6 @@ pip install -r requirements.txt
 python3 cypherwolf.py --help
 ```
 
-**Option 2: System-Wide Installation**
-```bash
-# Install from Kali/Debian repositories
-sudo apt update
-sudo apt install python3-dnspython python3-requests python3-urllib3 -y
-
-# Run directly
-python3 cypherwolf.py --help
-```
-
-#### 🍎 macOS
-
-```bash
-# Clone repository
-git clone https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework.git
-cd Advanced-Reconnaissance-Framework
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the tool
-python3 cypherwolf.py --help
-```
-
-#### 🪟 Windows
-
-```bash
-# Clone repository
-git clone https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework.git
-cd Advanced-Reconnaissance-Framework
-
-# Create virtual environment
-python -m venv venv
-venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the tool
-python cypherwolf.py --help
-```
-
 ### Dependencies
 
 ```
