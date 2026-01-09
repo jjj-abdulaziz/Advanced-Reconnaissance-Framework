@@ -1,4 +1,4 @@
-# Advanced Reconnaissance Framework
+# 🐺 CypherWolf - Advanced Reconnaissance Framework
 
 <div align="center">
 
@@ -14,72 +14,172 @@
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-**An intelligent, modular penetration testing framework for comprehensive reconnaissance**
+**The Ultimate Python-Based Penetration Testing Reconnaissance Tool**
 
-![Python](https://img.shields.io/badge/python-3.7+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)
+[![Python](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey.svg)](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework)
+[![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/releases)
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Modules](#-modules) • [Examples](#-examples)
+[Features](#-key-features) • [Installation](#-installation) • [Usage](#-usage) • [Quick Start](#-quick-start) • [Examples](#-examples)
 
 </div>
 
 ---
 
-## 🎯 Features
+## 📋 Table of Contents
 
-CypherWolf is a next-generation reconnaissance tool that combines multiple scanning techniques into a unified, intelligent framework:
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Modules](#-modules)
+- [Examples](#-examples)
+- [Vulnerability Checks](#-vulnerability-checks)
+- [Output](#-output-formats)
+- [Legal Notice](#-legal--ethical-notice)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-### Core Capabilities
+---
 
-- 🔍 **Advanced Port Scanning** - Multi-threaded scanner with banner grabbing and service detection
-- 🌐 **Comprehensive DNS Reconnaissance** - Full DNS enumeration with zone transfer attempts
-- 🕸️ **Intelligent Web Analysis** - Security headers, technology detection, vulnerability scanning
-- 🎯 **Subdomain Hunting** - Certificate transparency + DNS bruteforce enumeration
-- 🔐 **SSL/TLS Analysis** - Certificate inspection and cipher suite analysis
-- 🍪 **Cookie Security Analysis** - HttpOnly, Secure, and SameSite flag verification
-- 📂 **Directory Enumeration** - Smart directory discovery with status code analysis
-- 🚨 **Vulnerability Detection** - Automated checks for common security issues
+## 🎯 Overview
 
-### Advanced Features
+**CypherWolf** is a comprehensive, intelligent reconnaissance framework designed for penetration testers, security researchers, and ethical hackers. Built with Python, it combines multiple scanning techniques into a unified, powerful tool that automates the information gathering phase of security assessments.
 
-- ⚡ **Multi-threading** - Blazing fast scans with configurable thread pools
-- 📊 **Detailed Reporting** - Comprehensive JSON output with scan summaries
-- 🎨 **Beautiful CLI** - Color-coded output with progress indicators
-- 🔄 **Modular Architecture** - Run individual modules or full reconnaissance
-- 📝 **Verbose Logging** - Detailed operation logs for debugging
-- 💾 **Export Results** - Save all findings to structured JSON files
+### Why CypherWolf?
+
+- 🚀 **Fast & Efficient** - Multi-threaded scanning with configurable performance
+- 🎨 **Beautiful Interface** - Color-coded terminal output with real-time progress
+- 🧩 **Modular Design** - Run individual modules or full reconnaissance
+- 🔍 **Comprehensive** - DNS, ports, web, subdomains, and vulnerability scanning
+- 📊 **Detailed Reports** - JSON export with structured data
+- 🛡️ **Production Ready** - Tested on real-world targets
+
+---
+
+## ⚡ Key Features
+
+### Core Scanning Modules
+
+| Module | Description | Key Capabilities |
+|--------|-------------|------------------|
+| 🌐 **DNS Recon** | Comprehensive DNS enumeration | A, AAAA, MX, NS, TXT, SOA, CNAME, PTR, SRV records + Zone transfers |
+| 🔌 **Port Scanner** | Advanced port detection | Multi-threaded scanning, banner grabbing, service identification |
+| 🕸️ **Web Analyzer** | Application security analysis | Headers, tech stack, directories, SSL/TLS, cookies |
+| 🎯 **Subdomain Hunter** | Subdomain discovery | Certificate transparency logs + DNS bruteforce |
+
+### Advanced Capabilities
+
+#### 🔒 **16 Vulnerability Checks**
+
+- ✅ SQL Injection detection
+- ✅ XSS (Cross-Site Scripting) testing
+- ✅ Open Redirect vulnerabilities
+- ✅ Exposed sensitive files (.git, .env, backups)
+- ✅ Security header analysis (HSTS, CSP, X-Frame-Options)
+- ✅ CORS misconfigurations
+- ✅ Directory listing detection
+- ✅ Information disclosure (server versions, comments)
+- ✅ Mixed content detection
+- ✅ Clickjacking vulnerabilities
+- ✅ Cookie security analysis
+- ✅ SSL/TLS configuration issues
+- ✅ Insecure deserialization indicators
+- ✅ Autocomplete on password fields
+- ✅ Missing security headers
+- ✅ Technology fingerprinting (20+ frameworks)
+
+#### 📊 **Intelligence Features**
+
+- 🎯 **Smart Detection** - Identifies 20+ web frameworks and technologies
+- 🔐 **SSL/TLS Analysis** - Certificate inspection and cipher suite evaluation
+- 🍪 **Cookie Security** - HttpOnly, Secure, and SameSite flag verification
+- 📂 **Directory Enumeration** - Smart discovery with status code analysis
+- 🌐 **CORS Testing** - Wildcard and misconfiguration detection
+- 🚨 **Severity Grading** - Critical, High, Medium, Low vulnerability classification
+
+---
 
 ## 🚀 Installation
+
+### Quick Install (Recommended)
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework.git
+cd Advanced-Reconnaissance-Framework
+
+# 2. Run automated installer
+chmod +x install.sh
+./install.sh
+
+# 3. Activate virtual environment
+source venv/bin/activate
+
+# 4. You're ready!
+python3 cypherwolf.py --help
+```
+
+### Manual Installation
+
+#### For Kali Linux / Debian / Ubuntu
+
+```bash
+# Install Python venv (if not installed)
+sudo apt install python3-venv -y
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Make executable
+chmod +x cypherwolf.py
+```
+
+#### For macOS
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Make executable
+chmod +x cypherwolf.py
+```
+
+#### For Windows
+
+```bash
+# Create virtual environment
+python -m venv venv
+venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### System-Wide Installation (Kali/Debian)
+
+```bash
+# Install from system repositories
+sudo apt update
+sudo apt install python3-dnspython python3-requests python3-urllib3 -y
+```
 
 ### Prerequisites
 
 - Python 3.7 or higher
 - pip package manager
+- Internet connection for scanning
 
-### Quick Install
-
-```bash
-# Clone the repository
-git clone https://github.com/jjj-abdulaziz/cypherwolf.git
-cd cypherwolf
-
-# Install dependencies
-pip3 install -r requirements.txt
-
-# Make executable (Linux/Mac)
-chmod +x cypherwolf.py
-
-# Run the tool
-python3 cypherwolf.py --help
-```
-
-### Manual Dependencies
-
-```bash
-pip3 install dnspython requests urllib3
-```
+---
 
 ## 📖 Usage
 
@@ -89,173 +189,313 @@ pip3 install dnspython requests urllib3
 python3 cypherwolf.py <target> [options]
 ```
 
+### Command-Line Options
+
+```
+Required Arguments:
+  target                Target domain or IP address
+
+Optional Arguments:
+  -h, --help           Show help message and exit
+  -m, --mode MODE      Scan mode: dns, ports, web, subdomain, full (default: full)
+  -o, --output FILE    Save results to JSON file
+  -t, --threads NUM    Number of threads for port scanning (default: 100)
+  -v, --verbose        Enable verbose output
+  --version            Show version information
+```
+
 ### Scan Modes
 
-```bash
-# Full reconnaissance scan (all modules)
-python3 cypherwolf.py example.com
+| Mode | Description | Speed | Use Case |
+|------|-------------|-------|----------|
+| `dns` | DNS enumeration only | ⚡ Fast | Quick DNS mapping |
+| `ports` | Port scanning only | ⏱️ Medium | Service discovery |
+| `web` | Web application analysis | ⏱️ Medium | Security assessment |
+| `subdomain` | Subdomain discovery | 🐌 Slow | Mapping attack surface |
+| `full` | All modules (default) | 🐌 Slow | Complete reconnaissance |
 
-# DNS enumeration only
-python3 cypherwolf.py example.com -m dns
+---
 
-# Port scanning only
-python3 cypherwolf.py example.com -m ports
+## 🎓 Quick Start
 
-# Web application analysis
-python3 cypherwolf.py example.com -m web
-
-# Subdomain discovery
-python3 cypherwolf.py example.com -m subdomain
-```
-
-### Advanced Options
+### Your First Scan
 
 ```bash
-# Save results to JSON file
-python3 cypherwolf.py example.com -o results.json
+# Activate virtual environment
+source venv/bin/activate
 
-# Use more threads for faster scanning
-python3 cypherwolf.py example.com -m ports --threads 200
-
-# Enable verbose output
-python3 cypherwolf.py example.com -v
-
-# Full scan with all options
-python3 cypherwolf.py example.com -m full -o scan.json --threads 150 -v
+# Run a quick DNS scan
+python3 cypherwolf.py google.com -m dns
 ```
 
-### Command-Line Arguments
+### Real-World Example
 
-| Argument | Short | Description | Default |
-|----------|-------|-------------|---------|
-| `target` | - | Target domain or IP address | Required |
-| `--mode` | `-m` | Scan mode (dns, ports, web, subdomain, full) | `full` |
-| `--output` | `-o` | Save results to JSON file | None |
-| `--threads` | `-t` | Number of threads for port scanning | `100` |
-| `--verbose` | `-v` | Enable verbose output | `False` |
-| `--version` | - | Show version information | - |
+```bash
+# Full reconnaissance with verbose output and JSON export
+python3 cypherwolf.py example.com -m full -v -o example_scan.json
+```
 
-## 🧩 Modules
+### Testing on Safe Targets
 
-### 1. Network Scanner
+```bash
+# Test on deliberately vulnerable sites (with permission!)
+python3 cypherwolf.py testphp.vulnweb.com -m web
+python3 cypherwolf.py scanme.nmap.org -m ports
+```
 
-**Multi-threaded port scanning with advanced service detection**
-
-- Scans 1000+ common ports
-- Banner grabbing for service identification
-- Configurable thread pool for speed optimization
-- Real-time progress tracking
-
-**Output:**
-- Open ports with service names
-- Service banners and versions
-- Response times
-
-### 2. DNS Reconnaissance
-
-**Comprehensive DNS information gathering**
-
-- A, AAAA, MX, NS, TXT, SOA, CNAME, PTR, SRV records
-- Zone transfer (AXFR) attempts
-- Nameserver enumeration
-- DNS record analysis
-
-**Output:**
-- Complete DNS record mapping
-- Zone transfer vulnerabilities
-- Nameserver information
-
-### 3. Web Analyzer
-
-**In-depth web application security analysis**
-
-**Features:**
-- Security header analysis with grading system
-- Technology stack fingerprinting (20+ frameworks)
-- Directory enumeration with status codes
-- SSL/TLS certificate inspection
-- Cookie security analysis
-- Common vulnerability detection
-
-**Detects:**
-- Missing security headers (HSTS, CSP, X-Frame-Options)
-- Framework and CMS versions
-- Exposed admin panels
-- Information disclosure
-- Clickjacking vulnerabilities
-- Directory listings
-
-### 4. Subdomain Hunter
-
-**Advanced subdomain discovery using multiple techniques**
-
-**Methods:**
-- Certificate Transparency logs (crt.sh)
-- DNS bruteforce with custom wordlists
-- Wildcard detection
-- DNS resolution verification
-
-**Output:**
-- Discovered subdomains with IP addresses
-- Active vs inactive subdomains
-- Subdomain count statistics
+---
 
 ## 💡 Examples
 
-### Example 1: Quick DNS Check
+### Example 1: Quick DNS Reconnaissance
 
 ```bash
-python3 cypherwolf.py google.com -m dns
+python3 cypherwolf.py facebook.com -m dns
 ```
 
 **Output:**
 ```
 [14:23:45.123] 🔍 Starting DNS enumeration...
-[14:23:45.456] 🎯 A: 142.250.185.46
-[14:23:45.789] 🎯 MX: smtp.google.com
-[14:23:46.012] 🎯 NS: ns1.google.com
+[14:23:45.456] 🎯 A: 157.240.241.35
+[14:23:45.789] 🎯 MX: smtpin.vvv.facebook.com
+[14:23:46.012] 🎯 NS: a.ns.facebook.com
+[14:23:46.234] ✓ Found 12 DNS records
 ```
 
-### Example 2: Full Web Analysis
-
-```bash
-python3 cypherwolf.py example.com -m web -v
-```
-
-**Scans for:**
-- Security headers and scoring
-- Technologies (React, WordPress, etc.)
-- Hidden directories
-- SSL/TLS configuration
-- Cookie security flags
-- Potential vulnerabilities
-
-### Example 3: Fast Port Scan
+### Example 2: Port Scanning with Custom Threads
 
 ```bash
 python3 cypherwolf.py 192.168.1.1 -m ports --threads 200
 ```
 
-**Features:**
-- Scans 1000+ ports in seconds
-- Service identification
-- Banner grabbing
-- Real-time results
+**Scans 1000+ ports in seconds with service identification**
 
-### Example 4: Complete Reconnaissance
+### Example 3: Deep Web Application Analysis
 
 ```bash
-python3 cypherwolf.py target.com -m full -o full_scan.json -v
+python3 cypherwolf.py target.com -m web -v -o web_report.json
 ```
 
 **Performs:**
+- Security header analysis (A-F grading)
+- Technology stack detection
+- Directory enumeration
+- SSL/TLS inspection
+- Cookie security review
+- 16 vulnerability checks
+
+### Example 4: Subdomain Discovery
+
+```bash
+python3 cypherwolf.py example.com -m subdomain
+```
+
+**Discovers subdomains via:**
+- Certificate Transparency logs
+- DNS bruteforce with built-in wordlist
+- Active DNS resolution
+
+### Example 5: Complete Reconnaissance
+
+```bash
+python3 cypherwolf.py target.com -m full -o full_recon.json --threads 150 -v
+```
+
+**Executes:**
 - DNS enumeration (all record types)
 - Port scanning (1000+ ports)
 - Web application analysis
-- Subdomain discovery
-- Saves everything to JSON
+- Subdomain hunting
+- Comprehensive vulnerability assessment
+- Saves detailed JSON report
 
-## 📊 Output Example
+---
+
+## 🧩 Modules
+
+### 1. 🌐 DNS Reconnaissance
+
+**Comprehensive DNS information gathering**
+
+**Records Queried:**
+- A (IPv4 addresses)
+- AAAA (IPv6 addresses)
+- MX (Mail servers)
+- NS (Name servers)
+- TXT (Text records, SPF, DKIM)
+- SOA (Start of Authority)
+- CNAME (Canonical names)
+- PTR (Reverse DNS)
+- SRV (Service records)
+
+**Advanced Features:**
+- Zone transfer (AXFR) attempts
+- Nameserver enumeration
+- DNS record TTL analysis
+
+**Example:**
+```bash
+python3 cypherwolf.py github.com -m dns
+```
+
+---
+
+### 2. 🔌 Network Port Scanner
+
+**Multi-threaded port scanning with service detection**
+
+**Features:**
+- Scans 1000+ common ports (1-1024 + critical services)
+- Banner grabbing for version detection
+- Service identification
+- Configurable thread pool (default: 100)
+- Real-time progress tracking
+
+**Common Ports Scanned:**
+```
+21 (FTP), 22 (SSH), 23 (Telnet), 25 (SMTP), 53 (DNS),
+80 (HTTP), 110 (POP3), 143 (IMAP), 443 (HTTPS), 445 (SMB),
+1433 (MSSQL), 3306 (MySQL), 3389 (RDP), 5432 (PostgreSQL),
+5900 (VNC), 6379 (Redis), 8080 (HTTP-Alt), 27017 (MongoDB)
+```
+
+**Example:**
+```bash
+python3 cypherwolf.py target.com -m ports --threads 200
+```
+
+---
+
+### 3. 🕸️ Web Application Analyzer
+
+**In-depth web security assessment**
+
+#### Security Headers Analysis
+
+Checks for:
+- Strict-Transport-Security (HSTS)
+- Content-Security-Policy (CSP)
+- X-Frame-Options
+- X-Content-Type-Options
+- X-XSS-Protection
+- Referrer-Policy
+- Permissions-Policy
+
+**Grading System:** A (Excellent) to F (Poor)
+
+#### Technology Detection
+
+Identifies 20+ frameworks:
+- **CMS:** WordPress, Joomla, Drupal
+- **Frontend:** React, Angular, Vue.js, Next.js, Gatsby
+- **Backend:** Laravel, Django, Flask, Express
+- **Libraries:** jQuery, Bootstrap, Tailwind CSS
+- **Build Tools:** Webpack, Vite
+- **Servers:** Apache, Nginx, IIS
+
+#### Directory Enumeration
+
+Discovers:
+- Admin panels
+- API endpoints
+- Backup directories
+- Configuration files
+- Upload directories
+
+#### SSL/TLS Analysis
+
+- Certificate details
+- Cipher suites
+- Protocol versions
+- Validity dates
+- Issuer information
+
+#### Cookie Security
+
+Analyzes:
+- Secure flag
+- HttpOnly flag
+- SameSite attribute
+
+**Example:**
+```bash
+python3 cypherwolf.py example.com -m web -v
+```
+
+---
+
+### 4. 🎯 Subdomain Hunter
+
+**Multi-technique subdomain discovery**
+
+**Discovery Methods:**
+
+1. **Certificate Transparency Logs**
+   - Queries crt.sh database
+   - Finds subdomains from SSL certificates
+
+2. **DNS Bruteforce**
+   - Built-in wordlist of 50+ common subdomains
+   - Custom wordlist support
+   - Active DNS resolution
+
+**Built-in Wordlist:**
+```
+www, mail, ftp, admin, dev, staging, test, api, portal,
+vpn, cdn, blog, shop, forum, support, docs, wiki, mobile,
+app, secure, backup, status, monitor, and more...
+```
+
+**Example:**
+```bash
+python3 cypherwolf.py target.com -m subdomain
+```
+
+---
+
+## 🔒 Vulnerability Checks
+
+CypherWolf performs 16 automated vulnerability assessments:
+
+### Critical Severity
+
+| Vulnerability | Detection Method | Impact |
+|---------------|------------------|---------|
+| **SQL Injection** | Error-based detection | Database compromise |
+| **Insecure Deserialization** | Pattern matching | Remote code execution |
+
+### High Severity
+
+| Vulnerability | Detection Method | Impact |
+|---------------|------------------|---------|
+| **Missing HSTS** | Header analysis | Man-in-the-middle attacks |
+| **Exposed .git Directory** | File enumeration | Source code disclosure |
+| **Exposed .env Files** | File enumeration | Credential theft |
+| **Database Backups** | File enumeration | Data breach |
+| **Reflected XSS** | Payload injection | Session hijacking |
+
+### Medium Severity
+
+| Vulnerability | Detection Method | Impact |
+|---------------|------------------|---------|
+| **Clickjacking** | Header analysis | UI redress attacks |
+| **Directory Listing** | Response analysis | Information disclosure |
+| **Mixed Content** | Resource parsing | Security warnings |
+| **CORS Misconfiguration** | Header analysis | Cross-origin attacks |
+| **Open Redirect** | Redirect testing | Phishing |
+
+### Low Severity
+
+| Vulnerability | Detection Method | Impact |
+|---------------|------------------|---------|
+| **Sensitive Comments** | HTML parsing | Information leakage |
+| **Password Autocomplete** | Form analysis | Credential storage |
+| **Server Version Disclosure** | Banner analysis | Fingerprinting |
+| **Technology Disclosure** | Header analysis | Attack surface mapping |
+
+---
+
+## 📊 Output Formats
 
 ### Console Output
 
@@ -266,7 +506,7 @@ python3 cypherwolf.py target.com -m full -o full_scan.json -v
 
 Target: example.com
 Mode: full
-Started: 2024-01-07 14:30:00
+Started: 2024-01-10 14:30:00
 
 ────────────────────────────────────────────────────────────────
   DNS RECONNAISSANCE MODULE
@@ -286,6 +526,29 @@ Started: 2024-01-07 14:30:00
 [14:30:08.012] ✓ Found 5 open ports
 
 ────────────────────────────────────────────────────────────────
+  WEB APPLICATION ANALYSIS
+────────────────────────────────────────────────────────────────
+
+[14:30:09.234] 🔍 Analyzing security headers...
+[14:30:09.567] ✓ Strict-Transport-Security: max-age=31536000
+[14:30:09.890] ✗ Missing: Content-Security-Policy [high risk]
+[14:30:10.123] 🔍 Detecting technologies...
+[14:30:10.456] 🎯 Detected: WordPress
+[14:30:10.789] 🎯 Detected: PHP
+[14:30:11.012] 🔍 Running vulnerability checks...
+[14:30:12.345] 🚨 Exposed: .git/config (Git repository)
+[14:30:12.678] ⚠ Found 8 vulnerabilities: Critical=1, High=2, Medium=3, Low=2
+
+────────────────────────────────────────────────────────────────
+  SUBDOMAIN ENUMERATION
+────────────────────────────────────────────────────────────────
+
+[14:30:13.901] 🔍 Checking certificate transparency logs...
+[14:30:15.234] 🎯 Found: www.example.com → 93.184.216.34
+[14:30:15.567] 🎯 Found: mail.example.com → 93.184.216.35
+[14:30:16.890] ✓ Total subdomains found: 23
+
+────────────────────────────────────────────────────────────────
   SCAN SUMMARY
 ────────────────────────────────────────────────────────────────
 
@@ -293,10 +556,10 @@ DNS Records: 12 found
 Open Ports: 5 found
 Technologies: 8 detected
 Security Grade: B
-Vulnerabilities: 2 found
+Vulnerabilities: 8 found
 Subdomains: 23 found
 
-Scan completed successfully!
+✓ Scan completed successfully!
 ```
 
 ### JSON Output
@@ -304,41 +567,85 @@ Scan completed successfully!
 ```json
 {
   "target": "example.com",
-  "timestamp": "2024-01-07T14:30:00",
+  "timestamp": "2024-01-10T14:30:00",
   "scan_type": "full",
   "dns": {
     "A": ["93.184.216.34"],
     "MX": ["mail.example.com"],
-    "NS": ["ns1.example.com", "ns2.example.com"]
+    "NS": ["ns1.example.com", "ns2.example.com"],
+    "TXT": ["v=spf1 include:_spf.example.com ~all"]
   },
   "ports": [
     {
       "port": 80,
       "service": "HTTP",
-      "banner": "Apache/2.4.41",
+      "banner": "Apache/2.4.41 (Ubuntu)",
+      "state": "open"
+    },
+    {
+      "port": 443,
+      "service": "HTTPS",
+      "banner": "nginx/1.18.0",
       "state": "open"
     }
   ],
   "web": {
     "headers": {
+      "headers": {
+        "Strict-Transport-Security": {
+          "found": true,
+          "value": "max-age=31536000"
+        },
+        "Content-Security-Policy": {
+          "found": false,
+          "severity": "high"
+        }
+      },
       "score": "5/7",
       "grade": "B"
     },
-    "technologies": ["WordPress", "PHP", "jQuery"],
-    "vulnerabilities": []
+    "technologies": [
+      "WordPress",
+      "PHP",
+      "jQuery",
+      "Bootstrap"
+    ],
+    "vulnerabilities": [
+      {
+        "type": "Exposed Sensitive File",
+        "severity": "high",
+        "description": "Git repository exposed at /.git/config",
+        "path": ".git/config",
+        "recommendation": "Remove or restrict access to sensitive files"
+      }
+    ],
+    "ssl": {
+      "version": "TLSv1.3",
+      "cipher": "TLS_AES_256_GCM_SHA384",
+      "cert_subject": {
+        "commonName": "example.com"
+      },
+      "valid_until": "2025-01-10"
+    }
   },
   "subdomains": [
     {
       "subdomain": "www.example.com",
       "ips": ["93.184.216.34"]
+    },
+    {
+      "subdomain": "mail.example.com",
+      "ips": ["93.184.216.35"]
     }
   ]
 }
 ```
 
-## 🛡️ Security & Ethics
+---
 
-### ⚠️ CRITICAL LEGAL NOTICE
+## ⚠️ Legal & Ethical Notice
+
+### 🚨 CRITICAL WARNING
 
 **This tool is for AUTHORIZED security testing ONLY.**
 
@@ -346,47 +653,69 @@ Scan completed successfully!
 
 - ✅ **You MUST have explicit written permission** before scanning any system
 - ✅ **Only scan systems you own** or have authorization to test
-- ✅ **Comply with all local, state, and federal laws**
-- ✅ **Respect bug bounty program rules** and scope limitations
+- ✅ **Comply with all applicable laws** (Computer Fraud and Abuse Act, Computer Misuse Act, etc.)
+- ✅ **Respect bug bounty program rules** and stay within defined scope
 - ❌ **Unauthorized scanning is ILLEGAL** in most jurisdictions
-- ❌ **You are responsible** for how you use this tool
+- ❌ **You are solely responsible** for how you use this tool
 
-### Responsible Use
+### Authorized Use Cases
 
-This tool should be used for:
-- Authorized penetration testing
-- Bug bounty programs (within scope)
-- Security audits of your own systems
-- Educational purposes in controlled environments
-- Red team exercises with proper authorization
+This tool should ONLY be used for:
+
+- ✅ Penetration testing with written authorization
+- ✅ Bug bounty programs (within defined scope)
+- ✅ Security audits of your own systems
+- ✅ Educational purposes in controlled lab environments
+- ✅ Red team exercises with proper approval
+- ✅ Authorized vulnerability research
+
+### Legal Consequences
+
+Unauthorized use may result in:
+- 🚫 Criminal prosecution
+- 🚫 Civil lawsuits
+- 🚫 Fines and penalties
+- 🚫 Imprisonment
+- 🚫 Permanent criminal record
 
 ### Disclaimer
 
 The developers of CypherWolf:
-- Are NOT responsible for misuse of this tool
-- Do NOT condone illegal activities
-- Provide this tool for educational and authorized testing ONLY
-- Assume NO liability for actions taken by users
+- Are **NOT responsible** for misuse of this tool
+- Do **NOT condone** illegal activities
+- Provide this tool for **educational and authorized testing ONLY**
+- Assume **NO liability** for actions taken by users
+- **Will cooperate** with law enforcement if tool is used illegally
 
-**By using this tool, you agree to use it responsibly and legally.**
+**By using this tool, you agree to:**
+- Use it responsibly and legally
+- Obtain proper authorization
+- Accept full responsibility for your actions
+- Comply with all applicable laws
 
-## 🎓 Educational Purpose
+---
 
-CypherWolf is designed to help security professionals and students learn about:
-- Network reconnaissance techniques
-- Web application security
-- DNS enumeration methods
-- Port scanning strategies
-- Security header analysis
-- Common vulnerability patterns
+## 🎓 Educational Resources
+
+Learn more about ethical hacking:
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [PortSwigger Web Security Academy](https://portswigger.net/web-security)
+- [HackerOne Hacker101](https://www.hacker101.com/)
+- [TryHackMe](https://tryhackme.com/)
+- [HackTheBox](https://www.hackthebox.com/)
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+Contributions are welcome! Here's how you can help:
+
+### How to Contribute
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
@@ -397,70 +726,153 @@ Contributions are welcome! Please follow these guidelines:
 - Test your changes thoroughly
 - Update documentation as needed
 - Keep security and ethics in mind
+- Add comments for complex logic
 
-## 🐛 Bug Reports & Feature Requests
+### Ideas for Contributions
 
-Found a bug or have an idea? Please:
-1. Check existing issues first
-2. Create a detailed issue with:
+- Add new vulnerability checks
+- Improve detection accuracy
+- Add support for more technologies
+- Create new scanning modules
+- Improve performance
+- Add unit tests
+- Enhance documentation
+- Fix bugs
+
+---
+
+## 🐛 Bug Reports & Issues
+
+Found a bug? Have a suggestion?
+
+1. Check [existing issues](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/issues)
+2. Create a [new issue](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/issues/new) with:
+   - Clear title and description
    - Steps to reproduce
    - Expected vs actual behavior
-   - Your environment details
+   - Your environment (OS, Python version)
    - Screenshots if applicable
+
+---
 
 ## 📝 Roadmap
 
+### Upcoming Features
+
 - [ ] Integration with Shodan and Censys APIs
-- [ ] Automated exploit suggestion system
 - [ ] GraphQL endpoint discovery
 - [ ] AWS S3 bucket enumeration
 - [ ] API endpoint fuzzing
-- [ ] Automated report generation (HTML/PDF)
-- [ ] Integration with Metasploit
+- [ ] Automated exploit suggestion
+- [ ] HTML/PDF report generation
+- [ ] Metasploit integration
 - [ ] Plugin system for custom modules
 - [ ] Web-based dashboard
 - [ ] Docker container support
 - [ ] CI/CD pipeline integration
+- [ ] Machine learning for anomaly detection
+
+---
 
 ## 🏆 Credits & Acknowledgments
 
-Built with:
-- [dnspython](https://www.dnspython.org/) - DNS toolkit
-- [requests](https://requests.readthedocs.io/) - HTTP library
+### Built With
 
-Inspired by:
-- Nmap - Network mapper
-- Recon-ng - Reconnaissance framework
-- theHarvester - OSINT tool
-- Sublist3r - Subdomain enumerator
+- [dnspython](https://www.dnspython.org/) - DNS toolkit for Python
+- [requests](https://requests.readthedocs.io/) - HTTP library
+- [urllib3](https://urllib3.readthedocs.io/) - HTTP client
+
+### Inspired By
+
+- [Nmap](https://nmap.org/) - Network security scanner
+- [Recon-ng](https://github.com/lanmaster53/recon-ng) - Reconnaissance framework
+- [theHarvester](https://github.com/laramies/theHarvester) - OSINT tool
+- [Sublist3r](https://github.com/aboul3la/Sublist3r) - Subdomain enumerator
+- [Nikto](https://cirt.net/Nikto2) - Web server scanner
+
+### Special Thanks
+
+- Security research community
+- Open source contributors
+- Bug bounty hunters
+- Ethical hackers worldwide
+
+---
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Additional Terms
+### Additional Terms for Security Tools
 
 This software is intended for authorized security testing only. Users must:
+
 1. Obtain explicit written permission before scanning
 2. Comply with all applicable laws and regulations
 3. Use responsibly and ethically
 4. Not use for malicious purposes
+5. Accept full responsibility for their actions
+
+---
 
 ## 👤 Author
 
 **Abdul Aziz**
+
 - GitHub: [@jjj-abdulaziz](https://github.com/jjj-abdulaziz)
+- Repository: [Advanced-Reconnaissance-Framework](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework)
+
+---
 
 ## ⭐ Show Your Support
 
-If CypherWolf helped you in your security research or learning journey, please give it a ⭐️!
+If CypherWolf helped you in your security research, learning journey, or bug bounty hunting:
+
+- ⭐ Star this repository
+- 🍴 Fork it for your own use
+- 📢 Share it with the security community
+- 🐛 Report bugs and suggest features
+- 💖 Consider contributing
+
+---
+
+## 📊 Project Statistics
+
+- **Lines of Code:** 1000+
+- **Vulnerability Checks:** 16
+- **Technology Detections:** 20+
+- **Scan Modules:** 4
+- **Supported Platforms:** Linux, macOS, Windows
+- **License:** MIT (Open Source)
+
+---
+
+## 📞 Support
+
+Need help? Have questions?
+
+- 📖 Check the [QUICKSTART.md](QUICKSTART.md) guide
+- 🐛 Open an [issue](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/issues)
+- 💬 Join discussions in Issues section
+- 📧 Contact maintainers
 
 ---
 
 <div align="center">
 
-**Made with ❤️ for the security community**
+**Made with ❤️ for the cybersecurity community**
 
-*Stay curious, stay ethical, stay secure* 🐺
+*Hunt responsibly. Test ethically. Secure the digital world.* 🐺
+
+```
+"The best defense is a good offense - but only with permission!"
+```
+
+[![GitHub stars](https://img.shields.io/github/stars/jjj-abdulaziz/Advanced-Reconnaissance-Framework?style=social)](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jjj-abdulaziz/Advanced-Reconnaissance-Framework?style=social)](https://github.com/jjj-abdulaziz/Advanced-Reconnaissance-Framework/network/members)
+
+---
+
+**CypherWolf v1.0.0** | Released January 2024
 
 </div>
